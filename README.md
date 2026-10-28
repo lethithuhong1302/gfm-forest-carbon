@@ -9,7 +9,7 @@
 ---
 
 > **Methodological Transparency and Full Reproducibility Statement:**  
-> *"To ensure methodological transparency and full algorithmic reproducibility, the complete PyTorch multimodal fine-tuning pipeline, architectural definitions, and evaluation scripts, alongside an anonymized toy dataset, have been open-sourced and are available at: https://github.com/anonymous-repo/gfm-forest-carbon"*
+> *"To ensure methodological transparency and full algorithmic reproducibility, the complete PyTorch multimodal fine-tuning pipeline, architectural definitions, and evaluation scripts, alongside an anonymized toy dataset, have been open-sourced and are available at: https://github.com/lethithuhong1302/gfm-forest-carbon"*
 
 ---
 
@@ -125,7 +125,7 @@ gfm-forest-carbon/
 Clone the repository and install the dependencies:
 
 ```bash
-git clone https://github.com/anonymous-repo/gfm-forest-carbon.git
+git clone https://github.com/lethithuhong1302/gfm-forest-carbon.git
 cd gfm-forest-carbon
 
 # Option A: Using Conda (Recommended)
