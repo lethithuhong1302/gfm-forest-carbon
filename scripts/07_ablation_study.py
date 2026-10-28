@@ -29,9 +29,9 @@ def run_ablation_suite(epochs=10, batch_size=4, scenarios=None):
     print("=" * 80)
 
     target_scenarios = scenarios or [
-        "S1_Optical",
         "S1_Opt_DEM",
         "S2_Opt_S1_DEM",
+        "S3_Opt_ALOS2_DEM",
         "S4_Opt_SAR_DEM",
         "S5_Opt_SAR_GLCM_DEM",
         "S6_Indices",

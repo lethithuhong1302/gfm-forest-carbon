@@ -149,22 +149,25 @@ TOTAL_CHANNELS = 41
 PATCH_SIZE = 128
 
 # -------------------------------------------------------------------------
-# 6. Experimental Scenarios (S0 to S7)
+# 6. Experimental Scenarios (S0 to S7) - Controlled Dynamic Slicing Protocol
 # -------------------------------------------------------------------------
+# Slicing Protocol: X^(S) = S_S(X), C_S = C_opt^(S) + C_aux^(S)
+# Optical ViT engaged when C_opt=6, bypassed when C_opt=0.
+# Auxiliary CNN encoder matches C_aux in {1, 3, 5, 7, 15, 20, 35}.
 SCENARIOS = {
-    "S0_Constant": {"desc": "Constant Predictor (Training mean/median baseline)", "channels": 0, "keys": []},
-    "S1_Optical": {"desc": "Optical only (6 bands)", "channels": 6, "keys": ["optical"]},
-    "S1_Opt_DEM": {"desc": "Optical (6) + DEM (1)", "channels": 7, "keys": ["optical", "dem"]},
-    "S2_Opt_S1": {"desc": "Optical (6) + Sentinel-1 (4 bands)", "channels": 10, "keys": ["optical", "s1_only"]},
-    "S2_Opt_S1_DEM": {"desc": "Optical (6) + Sentinel-1 (4) + DEM (1)", "channels": 11, "keys": ["optical", "s1_only", "dem"]},
-    "S3_Opt_ALOS2": {"desc": "Optical (6) + ALOS-2 (2 bands)", "channels": 8, "keys": ["optical", "alos2_only"]},
-    "S3_Opt_ALOS2_DEM": {"desc": "Optical (6) + ALOS-2 (2) + DEM (1)", "channels": 9, "keys": ["optical", "alos2_only", "dem"]},
-    "S4_Opt_SAR": {"desc": "Optical (6) + Full SAR (6 bands: S1 + ALOS-2)", "channels": 12, "keys": ["optical", "sar"]},
-    "S4_Opt_SAR_DEM": {"desc": "Optical (6) + Full SAR (6) + DEM (1)", "channels": 13, "keys": ["optical", "sar", "dem"]},
-    "S5_Opt_SAR_GLCM": {"desc": "Optical (6) + SAR (6) + GLCM Texture (8)", "channels": 20, "keys": ["optical", "sar", "glcm"]},
-    "S5_Opt_SAR_GLCM_DEM": {"desc": "Optical (6) + SAR (6) + GLCM (8) + DEM (1)", "channels": 21, "keys": ["optical", "sar", "glcm", "dem"]},
-    "S6_Indices": {"desc": "Spectral & Moisture Indices only (20 bands)", "channels": 20, "keys": ["indices"]},
-    "S7_Full_Fusion": {"desc": "Full Multimodal with DEM (Optical + SAR + GLCM + Indices + DEM = 41 bands)", "channels": 41, "keys": ["optical", "sar", "glcm", "indices", "dem"]}
+    "S0_Constant": {"desc": "Constant Predictor (Training mean/median baseline)", "channels": 0, "c_opt": 0, "c_aux": 0, "keys": []},
+    "S1_Optical": {"desc": "Optical surface reflectance only (6 bands)", "channels": 6, "c_opt": 6, "c_aux": 0, "keys": ["optical"]},
+    "S1_Opt_DEM": {"desc": "S1: Optical (6) + DEM (1)", "channels": 7, "c_opt": 6, "c_aux": 1, "keys": ["optical", "dem"]},
+    "S2_Opt_S1": {"desc": "Optical (6) + Sentinel-1 (4 bands)", "channels": 10, "c_opt": 6, "c_aux": 4, "keys": ["optical", "s1_only"]},
+    "S2_Opt_S1_DEM": {"desc": "S2: Optical (6) + Sentinel-1 (4) + DEM (1)", "channels": 11, "c_opt": 6, "c_aux": 5, "keys": ["optical", "s1_only", "dem"]},
+    "S3_Opt_ALOS2": {"desc": "Optical (6) + ALOS-2 (2 bands)", "channels": 8, "c_opt": 6, "c_aux": 2, "keys": ["optical", "alos2_only"]},
+    "S3_Opt_ALOS2_DEM": {"desc": "S3: Optical (6) + ALOS-2 (2) + DEM (1)", "channels": 9, "c_opt": 6, "c_aux": 3, "keys": ["optical", "alos2_only", "dem"]},
+    "S4_Opt_SAR": {"desc": "Optical (6) + Full SAR (6 bands: S1 + ALOS-2)", "channels": 12, "c_opt": 6, "c_aux": 6, "keys": ["optical", "sar"]},
+    "S4_Opt_SAR_DEM": {"desc": "S4: Optical (6) + Full SAR (6) + DEM (1)", "channels": 13, "c_opt": 6, "c_aux": 7, "keys": ["optical", "sar", "dem"]},
+    "S5_Opt_SAR_GLCM": {"desc": "Optical (6) + SAR (6) + GLCM Texture (8)", "channels": 20, "c_opt": 6, "c_aux": 14, "keys": ["optical", "sar", "glcm"]},
+    "S5_Opt_SAR_GLCM_DEM": {"desc": "S5: Optical (6) + SAR (6) + GLCM (8) + DEM (1)", "channels": 21, "c_opt": 6, "c_aux": 15, "keys": ["optical", "sar", "glcm", "dem"]},
+    "S6_Indices": {"desc": "S6: Spectral & Moisture Indices only (20 bands, ViT bypassed)", "channels": 20, "c_opt": 0, "c_aux": 20, "keys": ["indices"]},
+    "S7_Full_Fusion": {"desc": "S7: Full Multimodal Fusion with DEM (Optical + SAR + GLCM + Indices + DEM = 41 bands)", "channels": 41, "c_opt": 6, "c_aux": 35, "keys": ["optical", "sar", "glcm", "indices", "dem"]}
 }
 
 # -------------------------------------------------------------------------

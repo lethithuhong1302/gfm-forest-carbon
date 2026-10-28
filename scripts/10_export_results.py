@@ -65,8 +65,41 @@ def export_paper_tables():
         f.write("% IEEE Table IV: Parameter Efficiency and Computational Footprint Across Model Adaptation Configurations (Reference Total: 106.7M Parameters)\n")
         f.write(df_t4.to_latex(index=False))
 
+    # 3. Table V: Controlled Ablation Across Modalities and Adaptation Regimes
+    t5_data = [
+        # Part A: Frozen Backbone Regime
+        {"Regime": "Frozen Backbone", "Scenario": "Prithvi Naive (Bilinear)", "Input Modalities": "Optical (6)", "AGB R2": 0.26, "SV R2": 0.32, "CS R2": 0.26, "AGB RMSE": 98.2, "SV RMSE": 70.7, "CS RMSE": 46.1, "CS MAE": 20.0},
+        {"Regime": "Frozen Backbone", "Scenario": "Prithvi Optical", "Input Modalities": "Optical (6)", "AGB R2": 0.43, "SV R2": 0.46, "CS R2": 0.43, "AGB RMSE": 86.1, "SV RMSE": 63.0, "CS RMSE": 40.5, "CS MAE": 19.7},
+        {"Regime": "Frozen Backbone", "Scenario": "S1: Opt + DEM", "Input Modalities": "Optical (6) + DEM (1)", "AGB R2": 0.35, "SV R2": 0.35, "CS R2": 0.35, "AGB RMSE": 92.0, "SV RMSE": 69.1, "CS RMSE": 43.2, "CS MAE": 22.2},
+        {"Regime": "Frozen Backbone", "Scenario": "S2: Opt + S1 + DEM", "Input Modalities": "Optical (6) + S1 (4) + DEM (1)", "AGB R2": 0.26, "SV R2": 0.30, "CS R2": 0.26, "AGB RMSE": 98.2, "SV RMSE": 71.7, "CS RMSE": 46.1, "CS MAE": 21.6},
+        {"Regime": "Frozen Backbone", "Scenario": "S3: Opt + ALOS-2 + DEM", "Input Modalities": "Optical (6) + ALOS-2 (2) + DEM (1)", "AGB R2": 0.34, "SV R2": -0.69, "CS R2": 0.34, "AGB RMSE": 92.7, "SV RMSE": 111.4, "CS RMSE": 43.5, "CS MAE": 18.9},
+        {"Regime": "Frozen Backbone", "Scenario": "S4: Opt + SAR + DEM", "Input Modalities": "Optical (6) + SAR (6) + DEM (1)", "AGB R2": -0.03, "SV R2": 0.01, "CS R2": -0.03, "AGB RMSE": 115.8, "SV RMSE": 85.3, "CS RMSE": 54.4, "CS MAE": 23.7},
+        {"Regime": "Frozen Backbone", "Scenario": "S5: Opt + SAR + GLCM + DEM", "Input Modalities": "Optical (6) + SAR (6) + GLCM (8) + DEM (1)", "AGB R2": 0.09, "SV R2": 0.13, "CS R2": 0.09, "AGB RMSE": 108.8, "SV RMSE": 80.0, "CS RMSE": 51.1, "CS MAE": 22.6},
+        {"Regime": "Frozen Backbone", "Scenario": "S6: Indices only", "Input Modalities": "Spectral Indices (20)", "AGB R2": 0.20, "SV R2": 0.19, "CS R2": 0.20, "AGB RMSE": 102.1, "SV RMSE": 77.2, "CS RMSE": 48.0, "CS MAE": 23.7},
+        {"Regime": "Frozen Backbone", "Scenario": "S7: Full Fusion", "Input Modalities": "Optical + SAR + GLCM + Indices + DEM (41)", "AGB R2": 0.45, "SV R2": 0.47, "CS R2": 0.45, "AGB RMSE": 84.6, "SV RMSE": 62.4, "CS RMSE": 39.8, "CS MAE": 19.1},
+        # Part C: Stage 1 Fine-Tuning 2-Block Regime (Best)
+        {"Regime": "Stage 1 FT (2-Blocks)", "Scenario": "Prithvi Optical", "Input Modalities": "Optical (6)", "AGB R2": 0.51, "SV R2": 0.47, "CS R2": 0.51, "AGB RMSE": 79.9, "SV RMSE": 62.4, "CS RMSE": 37.5, "CS MAE": 20.3},
+        {"Regime": "Stage 1 FT (2-Blocks)", "Scenario": "S1: Opt + DEM", "Input Modalities": "Optical (6) + DEM (1)", "AGB R2": 0.46, "SV R2": 0.35, "CS R2": 0.46, "AGB RMSE": 83.8, "SV RMSE": 69.1, "CS RMSE": 39.4, "CS MAE": 21.0},
+        {"Regime": "Stage 1 FT (2-Blocks)", "Scenario": "S2: Opt + S1 + DEM", "Input Modalities": "Optical (6) + S1 (4) + DEM (1)", "AGB R2": 0.29, "SV R2": 0.35, "CS R2": 0.29, "AGB RMSE": 96.1, "SV RMSE": 69.1, "CS RMSE": 45.2, "CS MAE": 19.8},
+        {"Regime": "Stage 1 FT (2-Blocks)", "Scenario": "S3: Opt + ALOS-2 + DEM", "Input Modalities": "Optical (6) + ALOS-2 (2) + DEM (1)", "AGB R2": 0.47, "SV R2": 0.47, "CS R2": 0.47, "AGB RMSE": 83.1, "SV RMSE": 62.4, "CS RMSE": 39.0, "CS MAE": 20.4},
+        {"Regime": "Stage 1 FT (2-Blocks)", "Scenario": "S4: Opt + SAR + DEM", "Input Modalities": "Optical (6) + SAR (6) + DEM (1)", "AGB R2": 0.25, "SV R2": 0.24, "CS R2": 0.25, "AGB RMSE": 98.8, "SV RMSE": 74.7, "CS RMSE": 46.4, "CS MAE": 25.2},
+        {"Regime": "Stage 1 FT (2-Blocks)", "Scenario": "S5: Opt + SAR + GLCM + DEM", "Input Modalities": "Optical (6) + SAR (6) + GLCM (8) + DEM (1)", "AGB R2": 0.55, "SV R2": 0.57, "CS R2": 0.55, "AGB RMSE": 76.5, "SV RMSE": 56.2, "CS RMSE": 36.0, "CS MAE": 19.4},
+        {"Regime": "Stage 1 FT (2-Blocks)", "Scenario": "S7: Full Fusion", "Input Modalities": "Optical + SAR + GLCM + Indices + DEM (41)", "AGB R2": 0.58, "SV R2": 0.59, "CS R2": 0.58, "AGB RMSE": 73.9, "SV RMSE": 54.9, "CS RMSE": 34.7, "CS MAE": 20.5},
+        # Part G: Stage 1 LoRA Initialization (All 12 Blocks)
+        {"Regime": "Stage 1 LoRA (12-Blocks)", "Scenario": "S7: Full Fusion", "Input Modalities": "Optical + SAR + GLCM + Indices + DEM (41)", "AGB R2": 0.52, "SV R2": 0.54, "CS R2": 0.52, "AGB RMSE": 79.1, "SV RMSE": 58.1, "CS RMSE": 37.2, "CS MAE": 20.3},
+    ]
+    df_t5 = pd.DataFrame(t5_data)
+    t5_csv = os.path.join(TABLES_DIR, "table5_controlled_ablation_results.csv")
+    df_t5.to_csv(t5_csv, index=False)
+
+    t5_tex = os.path.join(TABLES_DIR, "table5_controlled_ablation_results.tex")
+    with open(t5_tex, "w") as f:
+        f.write("% IEEE Table V: Controlled Ablation Results Across Multi-Modal Sensor Configurations\n")
+        f.write(df_t5.to_latex(index=False))
+
     print(f"[+] Saved Table 1 (CSV & LaTeX) to: {TABLES_DIR}")
     print(f"[+] Saved Table IV (CSV & LaTeX) to: {TABLES_DIR}")
+    print(f"[+] Saved Table V (CSV & LaTeX) to: {TABLES_DIR}")
     print("=" * 80)
 
 if __name__ == "__main__":

@@ -1,0 +1,24 @@
+% IEEE Table V: Controlled Ablation Results Across Multi-Modal Sensor Configurations
+\begin{tabular}{lllrrrrrrr}
+\toprule
+Regime & Scenario & Input Modalities & AGB R2 & SV R2 & CS R2 & AGB RMSE & SV RMSE & CS RMSE & CS MAE \\
+\midrule
+Frozen Backbone & Prithvi Naive (Bilinear) & Optical (6) & 0.260000 & 0.320000 & 0.260000 & 98.200000 & 70.700000 & 46.100000 & 20.000000 \\
+Frozen Backbone & Prithvi Optical & Optical (6) & 0.430000 & 0.460000 & 0.430000 & 86.100000 & 63.000000 & 40.500000 & 19.700000 \\
+Frozen Backbone & S1: Opt + DEM & Optical (6) + DEM (1) & 0.350000 & 0.350000 & 0.350000 & 92.000000 & 69.100000 & 43.200000 & 22.200000 \\
+Frozen Backbone & S2: Opt + S1 + DEM & Optical (6) + S1 (4) + DEM (1) & 0.260000 & 0.300000 & 0.260000 & 98.200000 & 71.700000 & 46.100000 & 21.600000 \\
+Frozen Backbone & S3: Opt + ALOS-2 + DEM & Optical (6) + ALOS-2 (2) + DEM (1) & 0.340000 & -0.690000 & 0.340000 & 92.700000 & 111.400000 & 43.500000 & 18.900000 \\
+Frozen Backbone & S4: Opt + SAR + DEM & Optical (6) + SAR (6) + DEM (1) & -0.030000 & 0.010000 & -0.030000 & 115.800000 & 85.300000 & 54.400000 & 23.700000 \\
+Frozen Backbone & S5: Opt + SAR + GLCM + DEM & Optical (6) + SAR (6) + GLCM (8) + DEM (1) & 0.090000 & 0.130000 & 0.090000 & 108.800000 & 80.000000 & 51.100000 & 22.600000 \\
+Frozen Backbone & S6: Indices only & Spectral Indices (20) & 0.200000 & 0.190000 & 0.200000 & 102.100000 & 77.200000 & 48.000000 & 23.700000 \\
+Frozen Backbone & S7: Full Fusion & Optical + SAR + GLCM + Indices + DEM (41) & 0.450000 & 0.470000 & 0.450000 & 84.600000 & 62.400000 & 39.800000 & 19.100000 \\
+Stage 1 FT (2-Blocks) & Prithvi Optical & Optical (6) & 0.510000 & 0.470000 & 0.510000 & 79.900000 & 62.400000 & 37.500000 & 20.300000 \\
+Stage 1 FT (2-Blocks) & S1: Opt + DEM & Optical (6) + DEM (1) & 0.460000 & 0.350000 & 0.460000 & 83.800000 & 69.100000 & 39.400000 & 21.000000 \\
+Stage 1 FT (2-Blocks) & S2: Opt + S1 + DEM & Optical (6) + S1 (4) + DEM (1) & 0.290000 & 0.350000 & 0.290000 & 96.100000 & 69.100000 & 45.200000 & 19.800000 \\
+Stage 1 FT (2-Blocks) & S3: Opt + ALOS-2 + DEM & Optical (6) + ALOS-2 (2) + DEM (1) & 0.470000 & 0.470000 & 0.470000 & 83.100000 & 62.400000 & 39.000000 & 20.400000 \\
+Stage 1 FT (2-Blocks) & S4: Opt + SAR + DEM & Optical (6) + SAR (6) + DEM (1) & 0.250000 & 0.240000 & 0.250000 & 98.800000 & 74.700000 & 46.400000 & 25.200000 \\
+Stage 1 FT (2-Blocks) & S5: Opt + SAR + GLCM + DEM & Optical (6) + SAR (6) + GLCM (8) + DEM (1) & 0.550000 & 0.570000 & 0.550000 & 76.500000 & 56.200000 & 36.000000 & 19.400000 \\
+Stage 1 FT (2-Blocks) & S7: Full Fusion & Optical + SAR + GLCM + Indices + DEM (41) & 0.580000 & 0.590000 & 0.580000 & 73.900000 & 54.900000 & 34.700000 & 20.500000 \\
+Stage 1 LoRA (12-Blocks) & S7: Full Fusion & Optical + SAR + GLCM + Indices + DEM (41) & 0.520000 & 0.540000 & 0.520000 & 79.100000 & 58.100000 & 37.200000 & 20.300000 \\
+\bottomrule
+\end{tabular}
