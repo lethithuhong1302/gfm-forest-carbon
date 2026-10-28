@@ -1,4 +1,4 @@
-# GFM-Forest-Carbon: Parameter-Efficient Multimodal Fine-Tuning of Geospatial Foundation Models for Sparse Forest Carbon Mapping
+# Parameter-Efficient Adaptation of Geospatial Foundation Models with Multi-Sensor Synergy for Forest Carbon Mapping under Limited Plot Inventory in Karst Terrains
 
 [![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/)
 [![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0%2B-ee4c2c.svg)](https://pytorch.org/)

@@ -30,7 +30,7 @@ def build_notebook(output_path):
     cells = []
 
     # Title & Metadata
-    cells.append(text_cell("""# Geospatial Foundation Models for Sparse-Plot Forest Carbon Mapping: Multimodal Fine-Tuning & Parameter-Efficient LoRA
+    cells.append(text_cell("""# Parameter-Efficient Adaptation of Geospatial Foundation Models with Multi-Sensor Synergy for Forest Carbon Mapping under Limited Plot Inventory in Karst Terrains
 ### Full Algorithmic Reproducibility & Interactive Walkthrough Notebook
 **Repository:** [https://github.com/lethithuhong1302/gfm-forest-carbon](https://github.com/lethithuhong1302/gfm-forest-carbon)  
 **Sensors (41 Channels):** Optical (6 HLS Reconstructed), Sentinel-1 C-band (4), ALOS-2 L-band (2), GLCM Textures (8), Spectral Indices (20), SRTM DEM Topography (1)  
