@@ -249,34 +249,6 @@ The modular adapter dynamically configures its processing branches based on scen
 | **S6** | `S6_Indices` | $20$ | $0$ | $20$ | Precomputed Spectral & Moisture Indices ($20$) | Evaluates the 20 precomputed spectral and moisture indices in isolation through a standalone 20-channel CNN encoder without the optical ViT backbone ($C_{\text{opt}} = 0$) or radar/DEM features, testing whether mathematical indices alone can substitute for physical multi-sensor observations. |
 | **S7** | `S7_Full_Fusion` | **$41$** | **$6$** | **$35$** | **Optical ($6$) + Dual SAR ($6$) + GLCM ($8$) + Indices ($20$) + DEM ($1$)** | **The complete 41-channel observation stack combining optical surface reflectance (6), dual-frequency SAR polarimetry (6), Haralick GLCM textures (8), spectral indices (20), and SRTM DEM elevation (1) through the dual-branch gated cross-modal adapter.** |
 
-### Empirical Validation Across Controlled Ablation Regimes (TABLE V Summary)
-
-Empirical validation on the locked spatial test partition ($N_{\text{test}} = 46$) highlights the critical role of multi-sensor synergy and backbone adaptation:
-
-| Adaptation Regime | Configuration | Input Modalities ($C_{\text{total}}$) | AGB $R^2$ | SV $R^2$ | CS $R^2$ | CS RMSE ($\text{Mg C ha}^{-1}$) | CS MAE ($\text{Mg C ha}^{-1}$) |
-|:---|:---|:---:|:---:|:---:|:---:|:---:|:---:|
-| **Part A: Frozen Backbone** | Prithvi Optical | Optical ($6$) | $0.43$ | $0.46$ | $0.43$ | $40.5$ | $19.7$ |
-| | S1: Opt + DEM | Optical ($6$) + DEM ($1$) | $0.35$ | $0.35$ | $0.35$ | $43.2$ | $22.2$ |
-| | S2: Opt + S1 + DEM | Optical ($6$) + S1 ($4$) + DEM ($1$) | $0.26$ | $0.30$ | $0.26$ | $46.1$ | $21.6$ |
-| | S3: Opt + ALOS-2 + DEM | Optical ($6$) + ALOS-2 ($2$) + DEM ($1$) | $0.34$ | $-0.69$ | $0.34$ | $43.5$ | $18.9$ |
-| | S4: Opt + SAR + DEM | Optical ($6$) + SAR ($6$) + DEM ($1$) | $-0.03$ | $0.01$ | $-0.03$ | $54.4$ | $23.7$ |
-| | S5: Opt + SAR + GLCM + DEM | Optical ($6$) + SAR ($6$) + GLCM ($8$) + DEM ($1$) | $0.09$ | $0.13$ | $0.09$ | $51.1$ | $22.6$ |
-| | S6: Indices only | Spectral Indices ($20$, ViT Bypassed) | $0.20$ | $0.19$ | $0.20$ | $48.0$ | $23.7$ |
-| | **S7: Full Fusion** | **Optical + SAR + GLCM + Indices + DEM ($41$)** | **$0.45$** | **$0.47$** | **$0.45$** | **$39.8$** | **$19.1$** |
-| **Part C: Stage 1 FT (2-Blocks)** | Prithvi Optical | Optical ($6$) | $0.51$ | $0.47$ | $0.51$ | $37.5$ | $20.3$ |
-| | S1: Opt + DEM | Optical ($6$) + DEM ($1$) | $0.46$ | $0.35$ | $0.46$ | $39.4$ | $21.0$ |
-| | S2: Opt + S1 + DEM | Optical ($6$) + S1 ($4$) + DEM ($1$) | $0.29$ | $0.35$ | $0.29$ | $45.2$ | $19.8$ |
-| | S3: Opt + ALOS-2 + DEM | Optical ($6$) + ALOS-2 ($2$) + DEM ($1$) | $0.47$ | $0.47$ | $0.47$ | $39.0$ | $20.4$ |
-| | S4: Opt + SAR + DEM | Optical ($6$) + SAR ($6$) + DEM ($1$) | $0.25$ | $0.24$ | $0.25$ | $46.4$ | $25.2$ |
-| | S5: Opt + SAR + GLCM + DEM | Optical ($6$) + SAR ($6$) + GLCM ($8$) + DEM ($1$) | $0.55$ | $0.57$ | $0.55$ | $36.0$ | $19.4$ |
-| | **S7: Full Fusion (Proposed)** | **Optical + SAR + GLCM + Indices + DEM ($41$)** | **$0.58$** | **$0.59$** | **$0.58$** | **$34.7$** | **$20.5$** |
-| **Part G: Stage 1 LoRA (12-Blocks)**| **S7: Full Fusion** | **Optical + SAR + GLCM + Indices + DEM ($41$)** | **$0.52$** | **$0.54$** | **$0.52$** | **$37.2$** | **$20.3$** |
-
-> **Key Analytical Takeaways:**
-> - **Speckle Mitigation:** Directly appending raw SAR backscatter without texture metrics ($S4$) degrades performance ($R^2 = -0.03$ under frozen regime) due to unmitigated microwave speckle and complex karst shadow geometry. Introducing Haralick GLCM spatial textures ($S5$) effectively filters local speckle noise and restores performance ($R^2$ jumps from $0.25 \to 0.55$ in Stage-1 2-block fine-tuning).
-> - **Indices vs. Physical Modalities:** Standalone mathematical spectral/moisture indices ($S6$) achieve only modest accuracy ($R^2 = 0.20$), demonstrating that algebraic indices alone cannot substitute for physical microwave penetration and foundational optical representations.
-> - **Optimal Frontier:** The full 41-channel synergy ($S7$) under Stage-1 2-block fine-tuning achieves the highest predictive power across all biophysical variables ($R^2 = 0.58$ for Carbon Stock, $R^2 = 0.59$ for Standing Volume) with minimal parameter overhead (19.0% trainable parameters).
-
 ---
 
 ## 🔒 Anonymity & Double-Blind Review Notice
