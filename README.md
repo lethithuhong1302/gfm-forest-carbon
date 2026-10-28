@@ -48,7 +48,7 @@ This repository presents **GFM-Forest-Carbon**, a parameter-efficient, multi-sen
 
 ---
 
-## 📊 Parameter-Efficiency Breakdown (TABLE IV)
+## 📊 Parameter-Efficiency Breakdown
 
 ### Parameter Efficiency and Computational Footprint Across Model Adaptation Configurations (Reference Total: 106.7M Parameters)
 
