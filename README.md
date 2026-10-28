@@ -32,7 +32,15 @@ This repository presents **GFM-Forest-Carbon**, a parameter-efficient, multi-sen
 
 ## 🏛️ Architecture Overview
 
+<p align="center">
+  <img src="docs/figures/fig2.png" alt="Architecture of Proposed Prithvi + Multimodal Topography Adapter Framework" width="95%">
+</p>
+<p align="center">
+  <em><b>Figure 1:</b> Architecture of the proposed Parameter-Efficient Geospatial Foundation Model framework (Prithvi-100M ViT Backbone + LoRA Attention + 41-Channel Auxiliary CNN Topography Adapter + Progressive Dense Regression Decoder).</em>
+</p>
+
 ```
+                      +------------------------------------------+
                       +------------------------------------------+
                       | Multi-Modal Remote Sensing Input (41 ch) |
                       +--------------------+---------------------+
@@ -267,3 +275,4 @@ This repository is maintained in an anonymized state to comply with double-blind
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
