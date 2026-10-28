@@ -36,61 +36,15 @@ This repository presents **GFM-Forest-Carbon**, a parameter-efficient, multi-sen
   <img src="docs/figures/fig2.png" alt="Architecture of Proposed Prithvi + Multimodal Topography Adapter Framework" width="95%">
 </p>
 <p align="center">
-  <em><b>Figure 1:</b> Architecture of the proposed Parameter-Efficient Geospatial Foundation Model framework (Prithvi-100M ViT Backbone + LoRA Attention + 41-Channel Auxiliary CNN Topography Adapter + Progressive Dense Regression Decoder).</em>
+  <em><b>Figure 1:</b> Architecture of the proposed Parameter-Efficient Geospatial Foundation Model framework (Prithvi + Multimodal Adapter). The pre-trained Prithvi ViT backbone is used to preserve general spatial representations. A trainable 4-block CNN encodes multi-frequency SAR, DEM, GLCM textures, and spectral indices, merged via dynamic spatial gating with a protective optical prior before progressive dense regression decoding.</em>
 </p>
 
-```
-                      +------------------------------------------+
-                      +------------------------------------------+
-                      | Multi-Modal Remote Sensing Input (41 ch) |
-                      +--------------------+---------------------+
-                                           |
-                   +-----------------------+-----------------------+
-                   |                                               |
-     [Channels 0..5: Optical RGB]               [Channels 6..40: SAR + GLCM + Ind + DEM]
-                   |                                               |
-                   v                                               v
-     +---------------------------+                   +---------------------------+
-     |   Method 2.1: Algebraic   |                   |  Auxiliary CNN Encoder    |
-     |    Spectral Inversion     |                   |  (Four Stride-2 Stages)   |
-     | [Blue, Green, Red,        |                   +-------------+-------------+
-     |  NIR, SWIR1, SWIR2]       |                                 |
-     +-------------+-------------+                                 | aux_feats
-                   |                                               | (B, 64, 8, 8)
-                   v                                               |
-     +---------------------------+                                 |
-     | NASA-IBM Prithvi-100M ViT |                                 |
-     | (12-layer Vision Transf.) |                                 |
-     |   * LoRA on W_q, W_v      |                                 |
-     |   * Base Weights Frozen   |                                 |
-     +-------------+-------------+                                 |
-                   |                                               |
-                   | optical_feats (B, 768, 8, 8)                  |
-                   v                                               |
-     +-------------------------------------------------------------+
-     |            Gated Cross-Modal Bottleneck Fusion              |
-     |       (Identity-Zero Initialized Residual Connection)       |
-     +-----------------------------+-------------------------------+
-                                   |
-                                   v fused_feats (B, 768, 8, 8)
-     +-------------------------------------------------------------+
-     |             Progressive Dense Regression Decoder            |
-     |   (4x Transposed-Conv Stages: 8x8 -> 16 -> 32 -> 64 -> 128) |
-     +-----------------------------+-------------------------------+
-                                   |
-                                   v
-             +---------------------+---------------------+
-             |                                           |
-             v                                           v
-    Aboveground Biomass (AGB)               Growing Stock Volume (GSV)
-            [Mg/ha]                                  [m³/ha]
-             |
-             +------------------> [ x 0.47 IPCC Factor ]
-                                         |
-                                         v
-                             Forest Carbon Stock (Carbon)
-                                      [Mg C/ha]
-```
+### Framework Description & Data Flow
+
+- **Pre-trained Optical ViT Backbone:** The pre-trained NASA-IBM Prithvi ViT backbone is employed to preserve broad geospatial and semantic representations. By injecting Parameter-Efficient LoRA ($r=8, \alpha=16.0$) into the self-attention projections ($W_q, W_v$), all pre-trained base parameters remain completely frozen, preventing catastrophic overfitting on sparse forest plot ground truth.
+- **Auxiliary CNN Feature Extraction:** A trainable 4-block convolutional neural network encodes auxiliary multi-frequency SAR (Sentinel-1 C-band & ALOS-2 L-band), SRTM DEM topography, GLCM spatial textures, and 20 spectral indices, projecting them from $(B, 35, 128, 128)$ to $(B, 64, 8, 8)$ to match the ViT spatial token map.
+- **Dynamic Spatial Gating & Optical Prior:** The auxiliary multimodal stream is merged with the optical representations through dynamic spatial gating with a protective optical prior, ensuring that pre-trained optical features are preserved while non-optical modalities inject complementary biophysical signals.
+- **Progressive Dense Regression Decoding:** The merged representations $(B, 768, 8, 8)$ are progressively upsampled through four transposed-convolution blocks to full resolution $(B, 128, 128)$, predicting independent targets Aboveground Biomass (AGB) and Growing Stock Volume (GSV), alongside derived Forest Carbon Stock ($\text{Carbon} = 0.47 \times \text{AGB}$).
 
 ---
 
