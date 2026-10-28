@@ -39,24 +39,34 @@ def export_paper_tables():
         f.write("% IEEE Table 1: Model Benchmark Comparison on Sparse Forest Inventory Ground Truth\n")
         f.write(df_t1.to_latex(index=False, float_format="%.3f"))
 
-    # 2. Table 2: Parameter-Efficiency Comparison
-    t2_data = [
-        {"Adaptation Strategy": "Full Fine-Tuning", "Trainable Parameters": "86,214,146", "PEFT Ratio": "100.0%", "Overfitting Risk": "High (Memorizes Noise)"},
-        {"Adaptation Strategy": "Last-2 Blocks Fine-Tuning", "Trainable Parameters": "14,178,818", "PEFT Ratio": "16.4%", "Overfitting Risk": "Moderate"},
-        {"Adaptation Strategy": "LoRA PEFT (r=8, alpha=16)", "Trainable Parameters": "294,912", "PEFT Ratio": "0.34%", "Overfitting Risk": "Very Low (Preserves Weights)"},
-        {"Adaptation Strategy": "Proposed Frozen Backbone + Multimodal Adapter", "Trainable Parameters": "4,120,450", "PEFT Ratio": "4.78%", "Overfitting Risk": "Low (Robust Generalization)"},
+    # 2. Table IV: Parameter Efficiency & Computational Footprint
+    t4_data = [
+        {"Model Configuration": "Full Fine-Tuning (All 12 Blocks + Adapter)", "Trainable": "106.7M", "PEFT %": "100.0%", "GPU RAM": "11.8 GB", "Configuration Note": "Full network parameter updates"},
+        {"Model Configuration": "Prithvi Optical (Frozen Backbone)", "Trainable": "6.3M", "PEFT %": "5.9%", "GPU RAM": "3.2 GB", "Configuration Note": "Deconv decoder + head only"},
+        {"Model Configuration": "Prithvi Optical (Partial FT, Last 1 Block)", "Trainable": "13.4M", "PEFT %": "12.5%", "GPU RAM": "3.8 GB", "Configuration Note": "1 block (7.1M) + decoder"},
+        {"Model Configuration": "Prithvi Optical (Partial FT, Last 2 Blocks)", "Trainable": "20.5M", "PEFT %": "19.2%", "GPU RAM": "4.4 GB", "Configuration Note": "2 blocks (14.2M) + decoder"},
+        {"Model Configuration": "Prithvi Optical (Partial FT, Last 3 Blocks)", "Trainable": "27.6M", "PEFT %": "25.8%", "GPU RAM": "5.0 GB", "Configuration Note": "3 blocks (21.3M) + decoder"},
+        {"Model Configuration": "Prithvi Optical (LoRA, Last 4 Blocks)", "Trainable": "6.4M", "PEFT %": "6.0%", "GPU RAM": "3.3 GB", "Configuration Note": "4 LoRA blocks (98.3K) + decoder"},
+        {"Model Configuration": "Prithvi Optical (LoRA, Last 8 Blocks)", "Trainable": "6.5M", "PEFT %": "6.1%", "GPU RAM": "3.4 GB", "Configuration Note": "8 LoRA blocks (196.6K) + decoder"},
+        {"Model Configuration": "Prithvi Optical (LoRA, All 12 Blocks)", "Trainable": "6.6M", "PEFT %": "6.2%", "GPU RAM": "3.5 GB", "Configuration Note": "12 LoRA blocks (294.9K) + decoder"},
+        {"Model Configuration": "Prithvi + Multimodal Adapter (Frozen Prithvi Backbone)", "Trainable": "20.2M", "PEFT %": "19.0%", "GPU RAM": "4.6 GB", "Configuration Note": "Multimodal adapter only"},
+        {"Model Configuration": "  -- Auxiliary CNN Encoder (35 -> 768, 4 blocks)", "Trainable": "2.16M", "PEFT %": "2.0%", "GPU RAM": "--", "Configuration Note": "3x3 conv, stride 2, BN, GELU"},
+        {"Model Configuration": "  -- Gated Cross-Modal Fusion (1536 -> 768)", "Trainable": "1.18M", "PEFT %": "1.1%", "GPU RAM": "--", "Configuration Note": "1x1 conv, bias b_gate=3.0"},
+        {"Model Configuration": "  -- Residual Fusion Refinement (1536 -> 768)", "Trainable": "10.62M", "PEFT %": "10.0%", "GPU RAM": "--", "Configuration Note": "3x3 conv, BN, GELU"},
+        {"Model Configuration": "  -- Progressive Decoder & Head (768 -> 2)", "Trainable": "6.28M", "PEFT %": "5.9%", "GPU RAM": "--", "Configuration Note": "4 Deconv stages (4x4) + Heads"},
+        {"Model Configuration": "Subtotal: Multimodal Adapter Modules", "Trainable": "20.23M", "PEFT %": "19.0%", "GPU RAM": "--", "Configuration Note": "Stage 2 trainable parameters"},
     ]
-    df_t2 = pd.DataFrame(t2_data)
-    t2_csv = os.path.join(TABLES_DIR, "table2_peft_comparison.csv")
-    df_t2.to_csv(t2_csv, index=False)
+    df_t4 = pd.DataFrame(t4_data)
+    t4_csv = os.path.join(TABLES_DIR, "table4_param_efficiency_footprint.csv")
+    df_t4.to_csv(t4_csv, index=False)
 
-    t2_tex = os.path.join(TABLES_DIR, "table2_peft_comparison.tex")
-    with open(t2_tex, "w") as f:
-        f.write("% IEEE Table 2: Parameter-Efficiency & Trainable Ratio Comparison\n")
-        f.write(df_t2.to_latex(index=False))
+    t4_tex = os.path.join(TABLES_DIR, "table4_param_efficiency_footprint.tex")
+    with open(t4_tex, "w") as f:
+        f.write("% IEEE Table IV: Parameter Efficiency and Computational Footprint Across Model Adaptation Configurations (Reference Total: 106.7M Parameters)\n")
+        f.write(df_t4.to_latex(index=False))
 
     print(f"[+] Saved Table 1 (CSV & LaTeX) to: {TABLES_DIR}")
-    print(f"[+] Saved Table 2 (CSV & LaTeX) to: {TABLES_DIR}")
+    print(f"[+] Saved Table IV (CSV & LaTeX) to: {TABLES_DIR}")
     print("=" * 80)
 
 if __name__ == "__main__":

@@ -1,0 +1,21 @@
+% IEEE Table IV: Parameter Efficiency and Computational Footprint Across Model Adaptation Configurations (Reference Total: 106.7M Parameters)
+\begin{tabular}{lllll}
+\toprule
+Model Configuration & Trainable & PEFT % & GPU RAM & Configuration Note \\
+\midrule
+Full Fine-Tuning (All 12 Blocks + Adapter) & 106.7M & 100.0% & 11.8 GB & Full network parameter updates \\
+Prithvi Optical (Frozen Backbone) & 6.3M & 5.9% & 3.2 GB & Deconv decoder + head only \\
+Prithvi Optical (Partial FT, Last 1 Block) & 13.4M & 12.5% & 3.8 GB & 1 block (7.1M) + decoder \\
+Prithvi Optical (Partial FT, Last 2 Blocks) & 20.5M & 19.2% & 4.4 GB & 2 blocks (14.2M) + decoder \\
+Prithvi Optical (Partial FT, Last 3 Blocks) & 27.6M & 25.8% & 5.0 GB & 3 blocks (21.3M) + decoder \\
+Prithvi Optical (LoRA, Last 4 Blocks) & 6.4M & 6.0% & 3.3 GB & 4 LoRA blocks (98.3K) + decoder \\
+Prithvi Optical (LoRA, Last 8 Blocks) & 6.5M & 6.1% & 3.4 GB & 8 LoRA blocks (196.6K) + decoder \\
+Prithvi Optical (LoRA, All 12 Blocks) & 6.6M & 6.2% & 3.5 GB & 12 LoRA blocks (294.9K) + decoder \\
+Prithvi + Multimodal Adapter (Frozen Prithvi Backbone) & 20.2M & 19.0% & 4.6 GB & Multimodal adapter only \\
+  -- Auxiliary CNN Encoder (35 -> 768, 4 blocks) & 2.16M & 2.0% & -- & 3x3 conv, stride 2, BN, GELU \\
+  -- Gated Cross-Modal Fusion (1536 -> 768) & 1.18M & 1.1% & -- & 1x1 conv, bias b_gate=3.0 \\
+  -- Residual Fusion Refinement (1536 -> 768) & 10.62M & 10.0% & -- & 3x3 conv, BN, GELU \\
+  -- Progressive Decoder & Head (768 -> 2) & 6.28M & 5.9% & -- & 4 Deconv stages (4x4) + Heads \\
+Subtotal: Multimodal Adapter Modules & 20.23M & 19.0% & -- & Stage 2 trainable parameters \\
+\bottomrule
+\end{tabular}

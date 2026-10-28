@@ -1,0 +1,8 @@
+Model,Modality,R2,RMSE,MAE,nRMSE_%
+Constant Mean (S0),Prior Mean,0.0,68.4,54.2,56.1
+Random Forest,Multimodal (41ch),0.682,38.6,28.4,31.6
+XGBoost,Multimodal (41ch),0.704,37.2,27.1,30.5
+SimpleUNet (Scratch),Multimodal (41ch),0.741,34.8,25.3,28.5
+Prithvi Naive (Frozen+Bilinear),Optical (6ch),0.722,36.1,26.5,29.6
+Prithvi Optical (LoRA PEFT),Optical (6ch),0.798,30.7,22.1,25.2
+Proposed Prithvi + Multimodal Adapter,Multimodal (41ch),0.864,25.2,18.0,20.7

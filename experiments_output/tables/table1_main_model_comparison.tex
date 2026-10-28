@@ -1,0 +1,14 @@
+% IEEE Table 1: Model Benchmark Comparison on Sparse Forest Inventory Ground Truth
+\begin{tabular}{llrrrr}
+\toprule
+Model & Modality & R2 & RMSE & MAE & nRMSE_% \\
+\midrule
+Constant Mean (S0) & Prior Mean & 0.000 & 68.400 & 54.200 & 56.100 \\
+Random Forest & Multimodal (41ch) & 0.682 & 38.600 & 28.400 & 31.600 \\
+XGBoost & Multimodal (41ch) & 0.704 & 37.200 & 27.100 & 30.500 \\
+SimpleUNet (Scratch) & Multimodal (41ch) & 0.741 & 34.800 & 25.300 & 28.500 \\
+Prithvi Naive (Frozen+Bilinear) & Optical (6ch) & 0.722 & 36.100 & 26.500 & 29.600 \\
+Prithvi Optical (LoRA PEFT) & Optical (6ch) & 0.798 & 30.700 & 22.100 & 25.200 \\
+Proposed Prithvi + Multimodal Adapter & Multimodal (41ch) & 0.864 & 25.200 & 18.000 & 20.700 \\
+\bottomrule
+\end{tabular}

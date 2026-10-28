@@ -48,14 +48,34 @@ This repository presents **GFM-Forest-Carbon**, a parameter-efficient, multi-sen
 
 ---
 
-## 📊 Parameter-Efficiency Breakdown
+## 📊 Parameter-Efficiency Breakdown (TABLE IV)
 
-| Adaptation Strategy | Trainable Parameters | Backbone Trainable Ratio | Overfitting Risk on Sparse Data |
-|---|:---:|:---:|:---:|
-| **Full Fine-Tuning** | $86,214,146$ | $100.0\%$ | Extreme (Memorizes background noise) |
-| **Last-2 Blocks Fine-Tuning** | $14,178,818$ | $16.4\%$ | Moderate |
-| **LoRA PEFT ($r=8, \alpha=16.0$)** | **$294,912$** | **$0.34\%$** | **Minimal (Preserves pre-trained weights)** |
-| **Proposed Adapter Framework** | **$4,120,450$** | **$4.78\%$** | **Optimal for Multimodal Generalization** |
+### Parameter Efficiency and Computational Footprint Across Model Adaptation Configurations (Reference Total: 106.7M Parameters)
+
+| Model Configuration | Trainable Parameters | PEFT % | GPU Memory | Configuration Note |
+|:---|:---:|:---:|:---:|:---|
+| **_Reference Baseline_** | | | | |
+| Full Fine-Tuning (All 12 Blocks + Adapter) | 106.7M | 100.0% | 11.8 GB | Full network parameter updates |
+| **_Stage 1A: Fully Frozen Optical Backbone_** | | | | |
+| Prithvi Optical (Frozen Backbone) | 6.3M | 5.9% | 3.2 GB | Deconv decoder + head only |
+| **_Stage 1B: Partial Backbone Fine-Tuning (Unfrozen Blocks)_** | | | | |
+| Prithvi Optical (Partial FT, Last 1 Block) | 13.4M | 12.5% | 3.8 GB | 1 block (7.1M) + decoder |
+| Prithvi Optical (Partial FT, Last 2 Blocks) | 20.5M | 19.2% | 4.4 GB | 2 blocks (14.2M) + decoder |
+| Prithvi Optical (Partial FT, Last 3 Blocks) | 27.6M | 25.8% | 5.0 GB | 3 blocks (21.3M) + decoder |
+| **_Stage 1C: Parameter-Efficient Fine-Tuning (LoRA Multi-Head Attention, $r=8$)_** | | | | |
+| Prithvi Optical (LoRA, Last 4 Blocks) | 6.4M | 6.0% | 3.3 GB | 4 LoRA blocks (98.3K) + decoder |
+| Prithvi Optical (LoRA, Last 8 Blocks) | 6.5M | 6.1% | 3.4 GB | 8 LoRA blocks (196.6K) + decoder |
+| Prithvi Optical (LoRA, All 12 Blocks) | 6.6M | 6.2% | 3.5 GB | 12 LoRA blocks (294.9K) + decoder |
+| **_Stage 2: Full Multimodal Adapter Integration (41 Channels)_** | | | | |
+| **Prithvi + Multimodal Adapter (Frozen Backbone)** | **20.2M** | **19.0%** | **4.6 GB** | **Proposed multimodal adapter only** |
+| **_Multimodal Adapter Component Breakdown (Non-Backbone Weights)_** | | | | |
+| &emsp; ↳ Auxiliary CNN Encoder ($35 \to 768$, 4 blocks) | 2.16M | 2.0% | — | $3\times 3$ conv, stride 2, BN, GELU |
+| &emsp; ↳ Gated Cross-Modal Fusion ($1536 \to 768$) | 1.18M | 1.1% | — | $1\times 1$ conv, bias $\mathbf{b}_{\text{gate}}=3.0$ |
+| &emsp; ↳ Residual Fusion Refinement ($1536 \to 768$) | 10.62M | 10.0% | — | $3\times 3$ conv, BN, GELU |
+| &emsp; ↳ Progressive Decoder & Head ($768 \to 2$) | 6.28M | 5.9% | — | 4 Deconv stages ($4\times 4$) + Heads |
+| &emsp; **Subtotal: Multimodal Adapter Modules** | **20.23M** | **19.0%** | **—** | **Stage 2 trainable parameters** |
+
+> **Key Computational Takeaway:** Full fine-tuning of all 106.7M parameters across the complete multimodal architecture requires 11.8 GB GPU VRAM and risks catastrophic overfitting on sparse sample plots ($N=299$). In contrast, the proposed two-stage frozen-backbone multimodal adapter freezes the optical foundation weights and trains exclusively the 20.2M adapter and decoder parameters (19.0%), reducing peak GPU memory by **61.0% (down to 4.6 GB)** while delivering peak predictive performance ($R^2=0.58$ for Carbon Stock).
 
 ---
 
