@@ -12,3 +12,4 @@ Prithvi + Multimodal Adapter (Frozen Prithvi Backbone),20.2M,19.0%,4.6 GB,Multim
   -- Gated Cross-Modal Fusion (1536 -> 768),1.18M,1.1%,--,"1x1 conv, bias b_gate=3.0"
   -- Residual Fusion Refinement (1536 -> 768),10.62M,10.0%,--,"3x3 conv, BN, GELU"
   -- Progressive Decoder & Head (768 -> 2),6.28M,5.9%,--,4 Deconv stages (4x4) + Heads
+Subtotal: Multimodal Adapter Modules,20.23M,19.0%,--,Stage 2 trainable parameters

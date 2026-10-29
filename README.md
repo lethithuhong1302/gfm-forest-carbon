@@ -73,6 +73,7 @@ This repository presents **GFM-Forest-Carbon**, a parameter-efficient, multi-sen
 | &emsp; ↳ Gated Cross-Modal Fusion ($1536 \to 768$) | 1.18M | 1.1% | — | $1\times 1$ conv, bias $\mathbf{b}_{\text{gate}}=3.0$ |
 | &emsp; ↳ Residual Fusion Refinement ($1536 \to 768$) | 10.62M | 10.0% | — | $3\times 3$ conv, BN, GELU |
 | &emsp; ↳ Progressive Decoder & Head ($768 \to 2$) | 6.28M | 5.9% | — | 4 Deconv stages ($4\times 4$) + Heads |
+| &emsp; **Subtotal: Multimodal Adapter Modules** | **20.23M** | **19.0%** | **—** | **Stage 2 trainable parameters** |
 
 > **Key Computational Takeaway:** Full fine-tuning of all 106.7M parameters across the complete multimodal architecture requires 11.8 GB GPU VRAM and risks catastrophic overfitting on sparse sample plots ($N=299$). In contrast, the proposed two-stage frozen-backbone multimodal adapter freezes the optical foundation weights and trains exclusively the 20.2M adapter and decoder parameters (19.0%), reducing peak GPU memory by **61.0% (down to 4.6 GB)** while delivering peak predictive performance ($R^2=0.58$ for Carbon Stock).
 

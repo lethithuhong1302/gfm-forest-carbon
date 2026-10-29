@@ -54,6 +54,7 @@ def export_paper_tables():
         {"Model Configuration": "  -- Gated Cross-Modal Fusion (1536 -> 768)", "Trainable": "1.18M", "PEFT %": "1.1%", "GPU RAM": "--", "Configuration Note": "1x1 conv, bias b_gate=3.0"},
         {"Model Configuration": "  -- Residual Fusion Refinement (1536 -> 768)", "Trainable": "10.62M", "PEFT %": "10.0%", "GPU RAM": "--", "Configuration Note": "3x3 conv, BN, GELU"},
         {"Model Configuration": "  -- Progressive Decoder & Head (768 -> 2)", "Trainable": "6.28M", "PEFT %": "5.9%", "GPU RAM": "--", "Configuration Note": "4 Deconv stages (4x4) + Heads"},
+        {"Model Configuration": "Subtotal: Multimodal Adapter Modules", "Trainable": "20.23M", "PEFT %": "19.0%", "GPU RAM": "--", "Configuration Note": "Stage 2 trainable parameters"},
     ]
     df_t4 = pd.DataFrame(t4_data)
     t4_csv = os.path.join(TABLES_DIR, "table4_param_efficiency_footprint.csv")
